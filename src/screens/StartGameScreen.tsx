@@ -14,7 +14,7 @@ import Card from "../components/Card";
 import Input from "../components/Input";
 import NumberContainer from "../components/NumberContainer";
 
-const StartGameScreen: React.FC = () => {
+const StartGameScreen: React.FC<Props> = (props) => {
   const [enteredValue, setEnteredValue] = useState<string>("");
   const [confirmed, setCofirmed] = useState<boolean>(false);
   const [selectedNumber, setSelectedNumber] = useState<number>();
@@ -52,7 +52,12 @@ const StartGameScreen: React.FC = () => {
       <Card extraStyles={styles.summaryContainer}>
         <Text>You Selected</Text>
         <NumberContainer>{selectedNumber}</NumberContainer>
-        <Button title="START GAME" onPress={() => {}} />
+        <Button
+          title="START GAME"
+          onPress={() => {
+            props.onStartGame(selectedNumber!);
+          }}
+        />
       </Card>
     );
   }
@@ -129,5 +134,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 });
+
+type Props = {
+  onStartGame: (value: number) => void;
+};
 
 export default StartGameScreen;

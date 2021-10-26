@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { View, Text, Button, StyleSheet } from "react-native";
+import React, { useState, useEffect, useRef } from "react";
+import { View, Text, Button, StyleSheet, Alert } from "react-native";
 
 import NumberContainer from "../components/NumberContainer";
 import Card from "../components/Card";
@@ -24,13 +24,54 @@ const GameScreen: React.FC<Props> = (props) => {
   const [currentGuess, setCurrentGuess] = useState<number>(
     generateRandomBetween(1, 100, props.userChoice)
   );
+  const [rounds, setRounds] = useState(0);
+  const currentMin = useRef<number>(1);
+  const currentMax = useRef<number>(100);
+
+  const { userChoice, onGameOver } = props;
+
+  useEffect(() => {
+    if (currentGuess === props.userChoice) {
+      props.onGameOver(rounds);
+    }
+  }, [currentGuess, userChoice, onGameOver]);
+
+  const nextGuessHandler = (direction: string) => {
+    if (
+      (direction === "lower" && currentGuess < props.userChoice) ||
+      (direction === "greater" && currentGuess > props.userChoice)
+    ) {
+      Alert.alert("Dont't lie", "You know that this is wrong...", [
+        { text: "Sorry!", style: "cancel" },
+      ]);
+      return;
+    }
+
+    if (direction === "lower") {
+      currentMax.current = currentGuess;
+    } else {
+      currentMin.current = currentGuess;
+    }
+    setCurrentGuess(
+      generateRandomBetween(
+        currentMin.current,
+        currentMax.current,
+        currentGuess
+      )
+    );
+    setRounds(rounds + 1);
+  };
+
   return (
     <View style={styels.screen}>
       <Text>Opponent's Guess</Text>
       <NumberContainer>{currentGuess}</NumberContainer>
       <Card extraStyles={styels.buttonsContainer}>
-        <Button title="LOWER" onPress={() => {}} />
-        <Button title="GREATER" onPress={() => {}} />
+        <Button title="LOWER" onPress={nextGuessHandler.bind(this, "lower")} />
+        <Button
+          title="GREATER"
+          onPress={nextGuessHandler.bind(this, "greater")}
+        />
       </Card>
     </View>
   );
@@ -53,6 +94,7 @@ const styels = StyleSheet.create({
 
 type Props = {
   userChoice: number;
+  onGameOver: (value: number) => void;
 };
 
 export default GameScreen;
