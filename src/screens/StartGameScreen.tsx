@@ -14,6 +14,7 @@ import defaultStyles from "../constants/default-styles";
 import Card from "../components/Card";
 import Input from "../components/Input";
 import NumberContainer from "../components/NumberContainer";
+import MainButton from "../components/MainButton";
 
 const StartGameScreen: React.FC<Props> = (props) => {
   const [enteredValue, setEnteredValue] = useState<string>("");
@@ -53,12 +54,13 @@ const StartGameScreen: React.FC<Props> = (props) => {
       <Card extraStyles={styles.summaryContainer}>
         <Text style={defaultStyles.bodyText}>You Selected</Text>
         <NumberContainer>{selectedNumber}</NumberContainer>
-        <Button
-          title="START GAME"
-          onPress={() => {
+        <MainButton
+          onClick={() => {
             props.onStartGame(selectedNumber!);
           }}
-        />
+        >
+          START GAME
+        </MainButton>
       </Card>
     );
   }
