@@ -2,11 +2,14 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 
 import colors from "../constants/colors";
+import defaultStyles from "../constants/default-styles";
 
 const Header: React.FC<Props> = (props) => {
   return (
     <View style={styles.header}>
-      <Text style={styles.headerTitle}>{props.title}</Text>
+      <Text style={{ ...styles.headerTitle, ...defaultStyles.title }}>
+        {props.title}
+      </Text>
     </View>
   );
 };

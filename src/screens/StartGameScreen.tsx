@@ -10,6 +10,7 @@ import {
 } from "react-native";
 
 import Colors from "../constants/colors";
+import defaultStyles from "../constants/default-styles";
 import Card from "../components/Card";
 import Input from "../components/Input";
 import NumberContainer from "../components/NumberContainer";
@@ -50,7 +51,7 @@ const StartGameScreen: React.FC<Props> = (props) => {
   if (confirmed) {
     confirmedOutput = (
       <Card extraStyles={styles.summaryContainer}>
-        <Text>You Selected</Text>
+        <Text style={defaultStyles.bodyText}>You Selected</Text>
         <NumberContainer>{selectedNumber}</NumberContainer>
         <Button
           title="START GAME"
@@ -65,9 +66,11 @@ const StartGameScreen: React.FC<Props> = (props) => {
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={styles.screen}>
-        <Text style={styles.title}>Start a New Game!</Text>
+        <Text style={{ ...defaultStyles.title, ...styles.title }}>
+          Start a New Game!
+        </Text>
         <Card extraStyles={styles.inputContainer}>
-          <Text>Select a Number</Text>
+          <Text style={defaultStyles.bodyText}>Select a Number</Text>
           <Input
             extraStyles={styles.input}
             blurOnSubmit
@@ -110,6 +113,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     marginVertical: 10,
+    fontFamily: "open-sans-bold",
   },
   inputContainer: {
     width: 300,
